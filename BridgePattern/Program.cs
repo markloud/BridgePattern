@@ -17,7 +17,7 @@ class BridgePattern
         }
         public string Operation() // calls the actual operation based on Bridge implementation
         {
-            return "Abstraction" + " <<< BRIDGE >>>> " + bridge.OperationImp();
+            return "Abstraction <<< BRIDGE >>>> " + bridge.OperationImp();
         }
     }
 
