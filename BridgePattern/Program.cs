@@ -1,54 +1,95 @@
 ﻿using System;
 
-class BridgePattern
+namespace DoFactory.GangOfFour.Bridge.Structural
 {
-    // Shows an abstraction and two implementations proceeding independently
-    interface Bridge
+    /// <summary>
+    /// MainApp startup class for Structural
+    /// Bridge Design Pattern.
+    /// </summary>
+    class MainApp
     {
-        string OperationImp();
+        /// <summary>
+        /// Entry point into console application.
+        /// </summary>
+        static void Main()
+        {
+            Abstraction ab = new RefinedAbstraction();
+
+            // Set implementation and call
+            ab.Implementor = new ConcreteImplementorA();
+            ab.Operation();
+
+            // Change implemention and call
+            ab.Implementor = new ConcreteImplementorB();
+            ab.Operation();
+            
+            // Wait for user
+            Console.ReadKey();
+        }
     }
 
+    /// <summary>
+    /// The 'Abstraction' class
+    /// </summary>
     class Abstraction
     {
-        Bridge bridge;
-        public Abstraction(Bridge implementation)
-        {
-            bridge = implementation;
-        }
-        public string Operation() // calls the actual operation based on Bridge implementation
-        {
-            return "Abstraction <<< BRIDGE >>>> " + bridge.OperationImp();
-        }
-    }
+        protected Implementor implementor;
 
-    class ImplementationA : Bridge
-    {
-        public string OperationImp()
+        // Property
+        public Implementor Implementor
         {
-            return "ImplementationA";
+            set { implementor = value; }
+        }
+
+        public virtual void Operation()
+        {
+            implementor.Operation();
         }
     }
 
-    class ImplementationB : Bridge
+    /// <summary>
+    /// The 'RefinedAbstraction' class
+    /// </summary>
+    class RefinedAbstraction : Abstraction
     {
-        public string OperationImp()
+        public override void Operation()
         {
-            return "ImplementationB";
+            implementor.Operation();
         }
     }
 
-    static void Main()
+    /// <summary>
+    /// The 'Implementor' abstract class
+    /// </summary>
+    abstract class Implementor
     {
-        Console.WriteLine("Bridge Pattern\n");
-        Console.WriteLine(new Abstraction(new ImplementationA()).Operation());
-        Console.WriteLine(new Abstraction(new ImplementationB()).Operation());
+        public abstract void Operation();
+    }
 
-        Console.ReadKey();
+    /// <summary>
+    /// The 'ConcreteImplementorA' class
+    /// </summary>
+    class ConcreteImplementorA : Implementor
+    {
+        public override void Operation()
+        {
+            Console.WriteLine("ConcreteImplementorA Operation");
+        }
+    }
+
+    /// <summary>
+    /// The 'ConcreteImplementorB' class
+    /// </summary>
+    class ConcreteImplementorB : Implementor
+    {
+        public override void Operation()
+        {
+            Console.WriteLine("ConcreteImplementorB Operation");
+        }
     }
 }
-/* Output
-Bridge Pattern
 
-Abstraction <<< BRIDGE >>>> ImplementationA
-Abstraction <<< BRIDGE >>>> ImplementationB
+/* Output:
+ConcreteImplementorA Operation
+ConcreteImplementorB Operation
 */
